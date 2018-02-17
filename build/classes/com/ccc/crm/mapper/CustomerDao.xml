@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ccc.crm.mapper.CustomerDao">
+
+	<!-- //总条数 -->
+	<!-- public Integer customerCountByQueryVo(QueryVo vo);
+		private String custName;
+	private String custSource;
+	private String custIndustry;
+	private String custLevel;
+	
+	 -->
+	<select id="customerCountByQueryVo" parameterType="QueryVo" resultType="Integer">
+		select count(*) from customer
+		<where>
+			<if test="custName != null and custName != ''">
+				cust_name like "%"#{custName}"%"
+			</if>
+			<if test="custSource != null and custSource != ''">
+				and cust_source = #{custSource}
+			</if>
+			<if test="custIndustry != null and custIndustry != ''">
+				and cust_industry = #{custIndustry}
+			</if>
+			<if test="custLevel != null and custLevel != ''">
+				and cust_level = #{custLevel}
+			</if>
+		</where>
+	</select>
+	<!-- //结果集 -->
+	<!-- public List<Customer> selectCustomerListByQueryVo(QueryVo vo); -->
+	<select id="selectCustomerListByQueryVo" parameterType="QueryVo" resultType="Customer">
+		select * from customer
+		<where>
+			<if test="custName != null and custName != ''">
+				cust_name like "%"#{custName}"%"
+			</if>
+			<if test="custSource != null and custSource != ''">
+				and cust_source = #{custSource}
+			</if>
+			<if test="custIndustry != null and custIndustry != ''">
+				and cust_industry = #{custIndustry}
+			</if>
+			<if test="custLevel != null and custLevel != ''">
+				and cust_level = #{custLevel}
+			</if>
+		</where>
+		limit #{startRow},#{size}
+	</select>
+	
+	<!-- 通过ID查询客户 -->
+	<select id="selectCustomerById" parameterType="Integer" resultType="Customer">
+		select * from customer
+		<where>
+			cust_id=#{id}
+		</where>
+		
+	</select>
+	
+	<!-- 通过ID修改客户 -->
+	<select id="updateCustomerById" parameterType="Integer" >
+		update customer
+		<set>
+			<if test="cust_name != null">
+				cust_name = #{cust_name},
+			</if>
+			<if test="cust_source != null">
+				cust_source = #{cust_source},
+			</if>
+			<if test="cust_industry != null">
+				cust_industry = #{cust_industry},
+			</if>
+			<if test="cust_level != null">
+				cust_level = #{cust_level},
+			</if>
+			<if test="cust_linkman != null">
+				cust_linkman = #{cust_linkman},
+			</if>
+			<if test="cust_phone != null">
+				cust_phone = #{cust_phone},
+			</if>
+			<if test="cust_mobile != null">
+				cust_mobile = #{cust_mobile},
+			</if>
+			<if test="cust_zipcode != null">
+				cust_zipcode = #{cust_zipcode},
+			</if>
+			<if test="cust_address != null">
+				cust_address = #{cust_address},
+			</if>
+		</set>
+		<where>
+			cust_id = ${cust_id}
+		</where>
+	</select>
+	<!-- //通过ID删除客户 -->
+	<delete id="deleteCustomerById" parameterType="Integer">
+		delete from customer where cust_id=#{value}
+	</delete>
+	
+	
+	<insert id="createCustomer" parameterType="Customer">
+		insert into 
+		customer(cust_id,cust_name,cust_source,cust_industry,cust_level,cust_linkman,cust_phone,cust_mobile,cust_zipcode,cust_address) 
+		values(null,#{cust_name},#{cust_source},#{cust_industry},#{cust_level},#{cust_linkman},#{cust_phone},#{cust_mobile},#{cust_zipcode},#{cust_address});
+ 
+	</insert>
+</mapper>
